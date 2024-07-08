@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Management</title>
+  <style>
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px;
+      text-align: center;
+      text-decoration: none;
+      background-color: dodgerblue;
+      color: white;
+      border-radius: 5px;
+    }
+
+
+    .button:hover {
+      background-color: cornflowerblue;
+    }
+
+    table {
+      border: black 1px solid;
+    }
+
+  </style>
+</head>
+<body>
+<h1>Space travel</h1>
+<h2>Welcome, <span th:text="${client != null ? client : 'Guest'}"></span></h2>
+<a class="button" href="/createClientForm">Create customer</a>
+<a class="button" href="/createTicketForm">Order a ticket</a>
+<a class="button" href="/findAllCustomers">Find all customers</a>
+<a class="button" href="/deleteCustomerByIdForm">Delete customer by Id</a>
+
+<div th:if="${action == 'create'}">
+  <form action="/createClient" method="post">
+    <label for="passport">Passport: </label>
+    <input type="text" id="passport" name="passport">
+    <br>
+    <br>
+
+    <label for="name">Name: </label>
+    <input type="text" id="name" name="name">
+    <br>
+    <br>
+
+    <input type="submit" value="Create">
+  </form>
+</div>
+
+<div th:if="${action == 'createTicket'}">
+  <form action="/createTicket" method="post">
+    <label for="createdAt">Created At: </label>
+    <input type="datetime-local" id="createdAt" name="createdAt">
+    <br>
+    <br>
+    <label for="clientId">Client: </label>
+    <input type="number" id="clientId" name="clientId">
+    <br>
+    <br>
+    <label for="fromPlanet">From Planet: </label>
+    <select id="fromPlanet" name="fromPlanet">
+      <option value="EARTH">Earth</option>
+      <option value="MARS">Mars</option>
+      <option value="JUPITER">Jupiter</option>
+      <option value="SATURN">Saturn</option>
+      <option value="MERCURY">Mercury</option>
+    </select>
+    <br>
+    <br>
+    <label for="toPlanet">To Planet: </label>
+    <select id="toPlanet" name="toPlanet">
+      <option value="EARTH">Earth</option>
+      <option value="MARS">Mars</option>
+      <option value="JUPITER">Jupiter</option>
+      <option value="SATURN">Saturn</option>
+      <option value="MERCURY">Mercury</option>
+    </select>
+    <br>
+    <br>
+    <input type="submit" value="Create">
+  </form>
+</div>
+
+<div th:if="${action == 'findById'}">
+  <form action="/findById" method="get">
+    <label for="id">Id: </label>
+    <input type="text" id="id" name="id">
+    <input type="submit" value="Find">
+  </form>
+</div>
+
+<div th:if="${action == 'delete'}">
+  <form action="/deleteById" method="get">
+    <label for="deleteId">Id: </label>
+    <input type="text" id="deleteId" name="id">
+    <input type="submit" value="Find">
+  </form>
+</div>
+
+<div th:if="${action == 'showClient'}">
+  <h2>Created customer</h2>
+  <p>Created client: <span th:text="${client}"></span></p>
+</div>
+
+<div th:if="${action == 'showTicket'}">
+  <h2>Ticket details</h2>
+  <p>Time: <span th:text="${ticket.getCreatedAt()}"></span></p>
+  <p>Client: <span th:text="${ticket.getClient()}"></span></p>
+  <p>From planet: <span th:text="${ticket.getFromPlanet()}"></span></p>
+  <p>Last Name: <span th:text="${ticket.getToPlanet()}"></span></p>
+</div>
+
+<div th:if="${action == 'findAll'}">
+  <h2>All customers</h2>
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Email</th>
+      <th>Phone number</th>
+      <th>Post code</th>
+    </tr>
+    <tr th:each="customer : ${customers}">
+      <td th:text="${customer.id}"></td>
+      <td th:text="${customer.firstName}"></td>
+      <td th:text="${customer.lastName}"></td>
+      <td th:text="${customer.email}"></td>
+      <td th:text="${customer.phoneNumber}"></td>
+      <td th:text="${customer.postCode}"></td>
+    </tr>
+  </table>
+</div>
+
+
+
+</body>
+</html>
